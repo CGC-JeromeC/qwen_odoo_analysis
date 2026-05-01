@@ -1,1 +1,26 @@
-Nothing should be ignored based on the provided file changes. The only modified file is a Python source file (.py), which should not be added to .gitignore according to the rules.
+```
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+
+# Dependencies
+.venv/
+venv/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+
+# Original rules preserved
+*.log
+```
