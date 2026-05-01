@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.osv import expression
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
@@ -31,8 +32,7 @@ class ResPartner(models.Model):
     @api.model
     def _name_search(self, name='', domain=None, operator='ilike', limit=100, order=None):
         if self.env.context.get('only_validated_vendors'):
-            # Force recompute validation_status for all partners in the search
-            self.flush_recordset()
+            # Use the search method with the computed field which will trigger _search_validation_status
             validated_ids = self.search([('validation_status', '=', 'validated')]).ids
             domain = expression.AND([domain or [], [('id', 'in', validated_ids)]])
         return super()._name_search(name=name, domain=domain, operator=operator, limit=limit, order=order)
@@ -47,7 +47,14 @@ class ResPartner(models.Model):
             # If no requirements exist, everyone is 'validated'
             if operator == '=' and value == 'validated':
                 return []  # match all
-            return [('id', '=', -1)]  # match none
+            elif operator == '=' and value in ('in_progress', 'not_valid'):
+                return [('id', '=', -1)]  # match none
+            elif operator == '!=':
+                if value == 'validated':
+                    return [('id', '=', -1)]  # none are non-validated
+                else:
+                    return []  # all are non-validated (since all are validated)
+            return [('id', '=', -1)]
 
         # Get all partners with at least one upload
         self.env.cr.execute("""
@@ -61,28 +68,27 @@ class ResPartner(models.Model):
 
         validated_ids = [pid for pid, cnt in uploaded_map.items() if cnt >= total_reqs]
         in_progress_ids = [pid for pid, cnt in uploaded_map.items() if 0 < cnt < total_reqs]
-        not_valid_ids = [pid for pid, cnt in uploaded_map.items() if cnt == 0]
-
+        
         def match(val):
             if val == 'validated':
                 return [('id', 'in', validated_ids)] if validated_ids else [('id', '=', -1)]
             elif val == 'in_progress':
                 return [('id', 'in', in_progress_ids)] if in_progress_ids else [('id', '=', -1)]
-            else:  # not_valid — partners with zero uploads or no documents at all
-                # Need to include partners that have no validation_document records at all
-                all_partners_with_docs = list(uploaded_map.keys())
-                # Partners with docs but 0 uploaded + partners with no docs at all
-                return [('id', 'not in', all_partners_with_docs + validated_ids + in_progress_ids)]
+            else:  # not_valid
+                # Partners NOT in validated or in_progress (includes those with no docs or all missing/expired)
+                excluded_ids = set(validated_ids + in_progress_ids)
+                if excluded_ids:
+                    return [('id', 'not in', list(excluded_ids))]
+                else:
+                    return []  # all partners are not_valid
         
         if operator == '=':
             return match(value)
         elif operator == '!=':
             # negate: return partners NOT in the matched set
             matched_domain = match(value)
-            if matched_domain == []:
-                return [('id', '=', -1)]
-            if matched_domain == [('id', '=', -1)]:
-                return []
+            if not matched_domain or matched_domain == [('id', '=', -1)]:
+                return []  # all partners match the negation
             # swap in/not in
             domain_item = matched_domain[0]
             if domain_item[1] == 'in':
@@ -91,21 +97,18 @@ class ResPartner(models.Model):
                 return [('id', 'in', domain_item[2])]
             return matched_domain
         elif operator == 'in' and isinstance(value, (list, tuple)):
-            from odoo.osv import expression
-            domains = [match(v) for v in value]
-            return expression.OR(domains)
-        elif operator == 'not in' and isinstance(value, (list, tuple)):
-            from odoo.osv import expression
-            domains = [match(v) for v in value]
-            # Get all IDs that match any of the values, then exclude them
-            combined = expression.OR(domains)
-            # This is complex; simpler to just return the negation
+            domains = [match(v) for v in value if v]
             if not domains:
                 return []
-            # For simplicity, handle common cases
+            return expression.OR(domains)
+        elif operator == 'not in' and isinstance(value, (list, tuple)):
+            # Get all IDs that match any of the values, then exclude them
+            domains = [match(v) for v in value if v]
+            if not domains:
+                return []
             all_matched_ids = set()
             for d in domains:
-                if d and d[0][1] == 'in':
+                if d and len(d) > 0 and d[0][1] == 'in':
                     all_matched_ids.update(d[0][2])
             if all_matched_ids:
                 return [('id', 'not in', list(all_matched_ids))]
