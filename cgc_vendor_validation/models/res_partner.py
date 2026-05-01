@@ -17,7 +17,7 @@ class ResPartner(models.Model):
         ('in_progress', 'In-Progress'),
         ('validated', 'Validated'),
     ], string='Validation Status', compute='_compute_validation_status',
-       search='_search_validation_status', store=False, compute_sudo=True)
+       search='_search_validation_status', store=True, tracking=True, compute_sudo=True, default='not_valid')
 
     @api.depends('validation_progress')
     def _compute_validation_status(self):
