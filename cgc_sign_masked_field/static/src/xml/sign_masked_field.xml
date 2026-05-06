@@ -4,11 +4,10 @@
     <t t-name="cgc_sign_masked_field.SignMaskedField">
         <div class="o_sign_masked_field_container">
             <input 
-                type="password" 
+                t-attf-type="{{ inputType }}"
                 t-attf-class="o_sign_masked_field_input {{ className or '' }}"
                 t-att-value="state.value"
                 t-on-input="onInput"
-                t-ref="input"
                 placeholder="Enter masked value"
             />
             <button 
@@ -16,6 +15,7 @@
                 class="o_sign_masked_field_toggle" 
                 t-on-click="toggleVisibility"
                 title="Toggle visibility"
+                tabindex="-1"
             >
                 <i t-attf-class="fa {{ state.showValue ? 'fa-eye-slash' : 'fa-eye' }}"/>
             </button>
