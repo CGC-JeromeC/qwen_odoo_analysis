@@ -30,11 +30,7 @@
     "website": "https://www.coregroupcompany.com",
     "license": "LGPL-3",
     "depends": ["sign"],
-    "data": [
-        "security/ir.model.access.csv",
-        "views/sign_templates_views.xml",
-        "views/sign_request_views.xml",
-    ],
+    "data": [],
     "assets": {
         "web.assets_backend": [
             "cgc_sign_masked_field/static/src/js/sign_masked_field.esm.js",

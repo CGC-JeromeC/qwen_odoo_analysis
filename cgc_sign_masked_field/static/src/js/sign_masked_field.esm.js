@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
 import { Component, useState } from "@odoo/owl";
 
 // Masked Field Component for Odoo Sign
@@ -29,7 +28,6 @@ class SignMaskedField extends Component {
 
 SignMaskedField.template = "cgc_sign_masked_field.SignMaskedField";
 SignMaskedField.props = {
-    ...standardFieldProps,
     value: { type: String, optional: true },
     update: { type: Function, optional: true },
 };
@@ -51,6 +49,6 @@ signFieldRegistry.add("masked", {
         }
     },
     isDisplayed: (field) => {
-        return field.type === 'masked';
+        return field.field_type === 'masked';
     },
 });
