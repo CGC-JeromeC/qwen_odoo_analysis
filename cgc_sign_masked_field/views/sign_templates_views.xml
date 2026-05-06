@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extend Sign Template Field to include Masked Field type -->
+    <record id="sign_template_field_view_form_inherit_masked" model="ir.ui.view">
+        <field name="name">sign.template.field.form.inherit.masked</field>
+        <field name="model">sign.template.field</field>
+        <field name="inherit_id" ref="sign.sign_template_field_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='field_type']" position="attributes">
+                <attribute name="options">{'no_open': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

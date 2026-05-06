@@ -1,0 +1,44 @@
+/* Odoo Sign Masked Field Styles */
+
+.o_sign_masked_field_container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.o_sign_masked_field_input {
+    width: 100%;
+    padding: 8px 35px 8px 12px;
+    font-size: 14px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.o_sign_masked_field_input:focus {
+    outline: none;
+    border-color: #00875a;
+    box-shadow: 0 0 0 2px rgba(0, 135, 90, 0.2);
+}
+
+.o_sign_masked_field_toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.o_sign_masked_field_toggle:hover {
+    color: #00875a;
+}
+
+/* Password input style for masked fields */
+input[type="password"].o_sign_masked_field_input {
+    letter-spacing: 2px;
+}

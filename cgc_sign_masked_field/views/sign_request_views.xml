@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sign Request Item view extension for masked field support -->
+    <record id="sign_request_item_view_form_inherit_masked" model="ir.ui.view">
+        <field name="name">sign.request.item.form.inherit.masked</field>
+        <field name="model">sign.request.item</field>
+        <field name="inherit_id" ref="sign.sign_request_item_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <!-- Additional info for masked fields can be displayed here -->
+            </xpath>
+        </field>
+    </record>
+</odoo>
