@@ -31,6 +31,7 @@
     "license": "LGPL-3",
     "depends": ["sign"],
     "data": [
+        "security/ir.model.access.csv",
         "views/sign_templates_views.xml",
         "views/sign_request_views.xml",
     ],
