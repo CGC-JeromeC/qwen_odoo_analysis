@@ -50,4 +50,7 @@ signFieldRegistry.add("masked", {
             input.value = value;
         }
     },
+    isDisplayed: (field) => {
+        return field.type === 'masked';
+    },
 });

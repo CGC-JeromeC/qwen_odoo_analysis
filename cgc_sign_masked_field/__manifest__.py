@@ -38,10 +38,12 @@
     "assets": {
         "web.assets_backend": [
             "cgc_sign_masked_field/static/src/js/sign_masked_field.esm.js",
+            "cgc_sign_masked_field/static/src/xml/sign_masked_field.xml",
             "cgc_sign_masked_field/static/src/css/sign_masked_field.css",
         ],
         "web.assets_frontend": [
             "cgc_sign_masked_field/static/src/js/sign_masked_field.esm.js",
+            "cgc_sign_masked_field/static/src/xml/sign_masked_field.xml",
             "cgc_sign_masked_field/static/src/css/sign_masked_field.css",
         ],
     },
