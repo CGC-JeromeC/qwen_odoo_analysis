@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields
+from odoo import models
 
 
 class SignTemplate(models.Model):
     _inherit = 'sign.template'
 
-    # Add masked field type to the existing field_type selection
-    field_type = fields.Selection(selection_add=[('masked', 'Masked Field')])
+    def _get_available_field_types(self):
+        """Extend available field types to include masked field."""
+        res = super()._get_available_field_types()
+        res.append(('masked', 'Masked Field'))
+        return res
 
 
 class SignRequestItem(models.Model):
