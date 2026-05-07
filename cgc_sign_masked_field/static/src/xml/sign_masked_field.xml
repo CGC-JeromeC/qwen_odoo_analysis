@@ -5,10 +5,10 @@
         <div class="o_sign_masked_field_container">
             <input 
                 t-attf-type="{{ inputType }}"
-                t-attf-class="o_sign_masked_field_input {{ className or '' }}"
+                t-attf-class="o_sign_masked_field_input {{ props.className or '' }}"
                 t-att-value="state.value"
                 t-on-input="onInput"
-                placeholder="Enter masked value"
+                placeholder="Enter masked value" autocomplete="off"
             />
             <button 
                 type="button" 
