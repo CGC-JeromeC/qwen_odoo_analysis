@@ -19,11 +19,17 @@ class SignMaskedField extends Component {
     }
 
     toggleVisibility() {
-        this.state.showValue = !this.state.showValue;
+        if (this.canReveal) {
+            this.state.showValue = !this.state.showValue;
+        }
+    }
+
+    get canReveal() {
+        return !(this.props.readonly || this.props.disabled);
     }
 
     get inputType() {
-        return this.state.showValue ? "text" : "password";
+        return this.state.showValue && this.canReveal ? "text" : "password";
     }
 }
 
@@ -32,6 +38,7 @@ SignMaskedField.props = {
     ...standardFieldProps,
     value: { type: String, optional: true },
     update: { type: Function, optional: true },
+    disabled: { type: Boolean, optional: true },
 };
 
 function isMaskedField(field) {
