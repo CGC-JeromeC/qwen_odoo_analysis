@@ -34,7 +34,9 @@
     "depends": ["sign"],
     "data": [
         "security/ir.model.access.csv",
+        "data/sign_item_type_data.xml",
     ],
+    "post_init_hook": "post_init_hook",
     "assets": {
         "web.assets_backend": [
             "cgc_sign_masked_field/static/src/js/sign_masked_field.esm.js",

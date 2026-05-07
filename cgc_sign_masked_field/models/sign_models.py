@@ -116,6 +116,21 @@ class SignMaskedFieldValue(models.Model):
         return self.value
 
 
+class SignItemType(models.Model):
+    _inherit = "sign.item.type"
+
+    is_masked_field = fields.Boolean(
+        string="Masked Field",
+        help="Marks this Sign field type as the custom masked input field.",
+    )
+
+    def _ensure_cgc_masked_field_type(self):
+        """Provision the Masked Field type used by Sign's Type dropdown."""
+        from odoo.addons.cgc_sign_masked_field.hooks import _ensure_masked_item_type
+
+        return _ensure_masked_item_type(self.env)
+
+
 class SignTemplate(models.Model):
     _inherit = "sign.template"
 
