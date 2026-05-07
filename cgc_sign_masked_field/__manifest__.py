@@ -1,6 +1,6 @@
 {
     "name": "CGC Sign Masked Field",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.0.1",
     "category": "Sign",
     "summary": "Add masked field functionality to Odoo Sign for sensitive data input",
     "description": """
