@@ -19,11 +19,17 @@ class SignMaskedField extends Component {
     }
 
     toggleVisibility() {
-        this.state.showValue = !this.state.showValue;
+        if (this.canReveal) {
+            this.state.showValue = !this.state.showValue;
+        }
+    }
+
+    get canReveal() {
+        return !(this.props.readonly || this.props.disabled);
     }
 
     get inputType() {
-        return this.state.showValue ? "text" : "password";
+        return this.state.showValue && this.canReveal ? "text" : "password";
     }
 }
 
@@ -32,7 +38,23 @@ SignMaskedField.props = {
     ...standardFieldProps,
     value: { type: String, optional: true },
     update: { type: Function, optional: true },
+    disabled: { type: Boolean, optional: true },
 };
+
+function isMaskedField(field) {
+    const typeInfo = field?.type_id || field?.typeId || field?.item_type_id || field?.itemTypeId;
+    const typeName = Array.isArray(typeInfo) ? typeInfo[1] : typeInfo?.display_name || typeInfo?.name;
+    return (
+        field?.type === "masked" ||
+        field?.item_type === "masked" ||
+        field?.itemType === "masked" ||
+        field?.is_masked_field ||
+        field?.isMaskedField ||
+        typeInfo?.is_masked_field ||
+        typeInfo?.isMaskedField ||
+        typeName === "Masked Field"
+    );
+}
 
 // Register the masked field in the sign field registry
 const signFieldRegistry = registry.category("sign_fields");
@@ -51,6 +73,6 @@ signFieldRegistry.add("masked", {
         }
     },
     isDisplayed: (field) => {
-        return field.type === 'masked';
+        return isMaskedField(field);
     },
 });

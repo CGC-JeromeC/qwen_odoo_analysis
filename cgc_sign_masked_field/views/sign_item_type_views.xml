@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sign_item_type_view_form_inherit_masked_field" model="ir.ui.view">
+        <field name="name">sign.item.type.form.inherit.masked.field</field>
+        <field name="model">sign.item.type</field>
+        <field name="inherit_id" ref="sign.sign_item_type_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group" position="inside">
+                <field name="is_masked_field"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

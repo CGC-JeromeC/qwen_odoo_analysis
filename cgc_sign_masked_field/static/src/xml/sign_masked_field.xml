@@ -5,12 +5,15 @@
         <div class="o_sign_masked_field_container">
             <input 
                 t-attf-type="{{ inputType }}"
-                t-attf-class="o_sign_masked_field_input {{ className or '' }}"
+                t-attf-class="o_sign_masked_field_input {{ props.className or '' }}"
                 t-att-value="state.value"
+                t-att-readonly="props.readonly ? true : undefined"
+                t-att-disabled="props.disabled ? true : undefined"
                 t-on-input="onInput"
-                placeholder="Enter masked value"
+                placeholder="Enter masked value" autocomplete="off"
             />
             <button 
+                t-if="canReveal"
                 type="button" 
                 class="o_sign_masked_field_toggle" 
                 t-on-click="toggleVisibility"
