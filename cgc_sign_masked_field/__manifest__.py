@@ -35,6 +35,7 @@
     "data": [
         "security/ir.model.access.csv",
         "data/sign_item_type_data.xml",
+        "views/sign_item_type_views.xml",
     ],
     "post_init_hook": "post_init_hook",
     "assets": {
